@@ -1,0 +1,120 @@
+### Create Sample Deal
+
+POST http://localhost:8080/api/deals
+Content-Type: application/json
+
+{
+  "dealName": "Sample Opportunity",
+  "companyName": "Example Account",
+  "dealValue": 12000,
+  "stage": "PROPOSAL",
+  "lifecycleState": "ACTIVE",
+  "dealStatus": "ACTIVE",
+  "dealType": "COMMERCIAL",
+  "owner": "Alex Rep",
+  "probability": 65,
+  "contractStatus": "OPEN",
+  "notes": "Generic sample deal for local API testing."
+}
+
+### Get All Deals
+
+GET http://localhost:8080/api/deals
+
+### Get Sample Deal
+
+GET http://localhost:8080/api/deals/1
+
+### Update Sample Deal
+
+PUT http://localhost:8080/api/deals/1
+Content-Type: application/json
+
+{
+  "dealName": "Sample Opportunity",
+  "companyName": "Example Account",
+  "dealValue": 15000,
+  "stage": "NEGOTIATION",
+  "lifecycleState": "ACTIVE",
+  "dealStatus": "ACTIVE",
+  "dealType": "COMMERCIAL",
+  "owner": "Alex Rep",
+  "probability": 75,
+  "contractStatus": "OPEN",
+  "notes": "Updated generic sample deal after follow-up."
+}
+
+### Create Activity For Sample Deal
+
+POST http://localhost:8080/api/deals/1/activities
+Content-Type: application/json
+
+{
+  "activityType": "CALL",
+  "outcome": "CONNECTED",
+  "notes": "Reviewed sample opportunity timing and next steps."
+}
+
+### Verify Deal Updated
+
+GET http://localhost:8080/api/deals/1
+
+### Get Activities For Sample Deal
+
+GET http://localhost:8080/api/deals/1/activities
+
+### Get Cadence For Sample Deal
+
+GET http://localhost:8080/api/deals/1/cadence
+
+### Get Priority For Sample Deal
+
+GET http://localhost:8080/api/deals/1/priority
+
+### Get Task Queue
+
+GET http://localhost:8080/api/tasks
+
+### Delete Sample Deal - run only if you want to remove local test data
+
+DELETE http://localhost:8080/api/deals/1
+
+### Get Action Recommendation For Sample Deal
+
+GET http://localhost:8080/api/deals/1/recommendation
+
+### Make Sample Deal Overdue
+
+PUT http://localhost:8080/api/deals/1
+Content-Type: application/json
+
+{
+  "dealName": "Sample Opportunity",
+  "companyName": "Example Account",
+  "dealValue": 12000,
+  "stage": "PROPOSAL",
+  "lifecycleState": "ACTIVE",
+  "dealStatus": "ACTIVE",
+  "dealType": "COMMERCIAL",
+  "owner": "Alex Rep",
+  "probability": 65,
+  "lastContactDate": "2026-05-25",
+  "nextFollowUpDate": "2026-05-24",
+  "contractStatus": "OPEN",
+  "notes": "Generic overdue sample for local API testing."
+}
+
+### Create Follow-Up Activity
+
+POST http://localhost:8080/api/deals/1/activities
+Content-Type: application/json
+
+{
+  "activityType": "CALL",
+  "outcome": "CONNECTED",
+  "notes": "Testing follow-up update."
+}
+
+### Get Forecast Insight For Sample Deal
+
+GET http://localhost:8080/api/forecast/deals/1/insight

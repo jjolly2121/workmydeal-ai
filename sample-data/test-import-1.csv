@@ -1,0 +1,6 @@
+dealName,companyName,dealValue,stage,probability
+Sample Opportunity A,Example Account A,25000,PROPOSAL,75
+Sample Opportunity B,Example Account B,18000,NEGOTIATION,60
+Sample Opportunity C,Example Account C,12000,DISCOVERY,40
+Sample Opportunity D,Example Account D,8000,QUALIFIED,35
+Sample Opportunity E,Example Account E,50000,PROPOSAL,80
