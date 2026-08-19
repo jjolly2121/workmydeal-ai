@@ -1,5 +1,7 @@
 # WorkMyDeal AI
 
+[![Tests](https://github.com/jjolly2121/workmydeal-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/jjolly2121/workmydeal-ai/actions/workflows/tests.yml)
+
 WorkMyDeal AI is a full-stack sales execution and forecasting platform built to
 showcase practical product engineering: a React frontend, Spring Boot REST API,
 role-aware workflows, local persistence, spreadsheet import, reporting exports,
