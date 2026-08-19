@@ -1,6 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { apiFetch } from "../api";
+import DealActivityForm from "../features/deals/DealActivityForm";
+import DealCreateForm from "../features/deals/DealCreateForm";
+import DealFinder from "../features/deals/DealFinder";
+import DealLifecycleHistory from "../features/deals/DealLifecycleHistory";
+import {
+  createEmptyDeal,
+  formatEnumText,
+  getVisibleDeals,
+  searchDeals,
+  validateDeal,
+} from "../features/deals/dealUtils";
 
 function DealsPage({ currentUser, selectedDealId }) {
   // Page state is grouped around deal selection, feedback, and form visibility.
@@ -31,23 +42,9 @@ function DealsPage({ currentUser, selectedDealId }) {
     notes: "",
   });
 
-  const [newDealData, setNewDealData] = useState({
-    dealName: "",
-    companyName: "",
-    contactName: "",
-    contactPhone: "",
-    contactEmail: "",
-    contactInformation: "",
-    dealValue: "",
-    probability: 25,
-    stage: "NEW_LEAD",
-    dealStatus: "ACTIVE",
-    dealType: "COMMERCIAL",
-    expectedCloseDate: "",
-    contractStatus: "NONE",
-    owner: currentUser?.name || "",
-    notes: "",
-  });
+  const [newDealData, setNewDealData] = useState(() =>
+    createEmptyDeal(currentUser?.name)
+  );
 
   // Load core deal data from the Spring Boot API.
   function loadDeals() {
@@ -139,46 +136,9 @@ function DealsPage({ currentUser, selectedDealId }) {
     setActivityData({ ...activityData, [name]: value });
   }
 
-  // Keep validation close to the save/create actions that rely on it.
-  function validateDeal(data) {
-    if (!data.dealName || !data.dealName.trim()) {
-      return "Deal name is required.";
-    }
-
-    if (!data.companyName || !data.companyName.trim()) {
-      return "Company name is required.";
-    }
-
-    if (Number(data.dealValue) <= 0) {
-      return "Deal value must be greater than 0.";
-    }
-
-    if (Number(data.probability) < 0 || Number(data.probability) > 100) {
-      return "Probability must be between 0 and 100.";
-    }
-
-    return "";
-  }
-
   // Reset uses the signed-in rep as the default owner for newly created deals.
   function resetNewDealForm() {
-    setNewDealData({
-      dealName: "",
-      companyName: "",
-      contactName: "",
-      contactPhone: "",
-      contactEmail: "",
-      contactInformation: "",
-      dealValue: "",
-      probability: 25,
-      stage: "NEW_LEAD",
-      dealStatus: "ACTIVE",
-      dealType: "COMMERCIAL",
-      expectedCloseDate: "",
-      contractStatus: "NONE",
-      owner: currentUser?.name || "",
-      notes: "",
-    });
+    setNewDealData(createEmptyDeal(currentUser?.name));
   }
 
   // Create and save flows normalize numeric/date fields before sending to the API.
@@ -432,33 +392,6 @@ function DealsPage({ currentUser, selectedDealId }) {
     setError("");
   }
 
-  // Formatting helpers keep enum and money display consistent across the page.
-  function formatEnumText(value) {
-    if (!value) {
-      return "N/A";
-    }
-
-    return value
-      .toLowerCase()
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  }
-
-  function formatMoney(value) {
-    const number = Number(value || 0);
-
-    if (number >= 1000000) {
-      return `$${(number / 1000000).toFixed(1)}M`;
-    }
-
-    if (number >= 1000) {
-      return `$${Math.round(number / 1000)}K`;
-    }
-
-    return `$${number.toLocaleString()}`;
-  }
-
   function updateDealStatus(status) {
     setFeedback("");
     setError("");
@@ -487,54 +420,12 @@ function DealsPage({ currentUser, selectedDealId }) {
   }
 
   // Managers see their reps' deals; reps see only their own assigned deals.
-  const managerRepIds = users
-    .filter((user) => user.managerId === currentUser?.id)
-    .map((user) => user.id);
-
-  const visibleDeals = deals.filter((deal) => {
-    if (deal.dealStatus !== "ACTIVE") {
-      return false;
-    }
-
-    if (currentUser?.role === "ADMIN") {
-      return true;
-    }
-
-    if (currentUser?.role === "MANAGER") {
-      return (
-        managerRepIds.includes(deal.ownerId) || deal.ownerId === currentUser.id
-      );
-    }
-
-    if (currentUser?.role === "REP") {
-      return (
-        deal.ownerId === currentUser.id ||
-        (!deal.ownerId && deal.owner === currentUser.name)
-      );
-    }
-
-    return false;
-  });
+  const visibleDeals = getVisibleDeals(deals, users, currentUser);
 
   const canViewLifecycleHistory =
     currentUser?.role === "MANAGER" || currentUser?.role === "ADMIN";
 
-  const normalizedSearch = searchTerm.trim().toLowerCase();
-
-  // Require at least two characters so large deal lists do not flood the page.
-  const filteredDeals =
-    normalizedSearch.length < 2
-      ? []
-      : visibleDeals.filter((deal) => {
-          return (
-            deal.dealName?.toLowerCase().includes(normalizedSearch) ||
-            deal.companyName?.toLowerCase().includes(normalizedSearch) ||
-            deal.contactName?.toLowerCase().includes(normalizedSearch) ||
-            deal.contactEmail?.toLowerCase().includes(normalizedSearch) ||
-            deal.stage?.toLowerCase().includes(normalizedSearch) ||
-            deal.dealStatus?.toLowerCase().includes(normalizedSearch)
-          );
-        });
+  const filteredDeals = searchDeals(visibleDeals, searchTerm);
 
   const visibleActivities = showAllActivities
     ? activities
@@ -604,49 +495,13 @@ function DealsPage({ currentUser, selectedDealId }) {
       {feedback && <div className="save-feedback">{feedback}</div>}
       {error && <div className="form-error">{error}</div>}
 
-      {/* Search keeps the main page focused until the user chooses a specific deal. */}
-      <div className="deal-finder">
-        <input
-          className="deal-search"
-          placeholder="Search by deal, company, contact, stage, or status..."
-          value={searchTerm}
-          onChange={(event) => setSearchTerm(event.target.value)}
-        />
-
-        <div className="deal-finder-list">
-          {normalizedSearch.length < 2 ? (
-            <div className="deal-finder-empty">
-              Type at least 2 characters to find a deal.
-            </div>
-          ) : filteredDeals.length === 0 ? (
-            <div className="deal-finder-empty">
-              No deals match your search.
-            </div>
-          ) : (
-            filteredDeals.map((deal) => (
-              <button
-                key={deal.id}
-                type="button"
-                className={
-                  selectedDeal?.id === deal.id
-                    ? "deal-finder-item active"
-                    : "deal-finder-item"
-                }
-                onClick={() => handleSelectDeal(deal)}
-              >
-                <span>
-                  <strong>{deal.dealName || "Untitled Deal"}</strong>
-                  <small>{deal.companyName || "No company"}</small>
-                </span>
-
-                <span className="deal-finder-meta">
-                  {formatEnumText(deal.stage)} · {formatMoney(deal.dealValue)}
-                </span>
-              </button>
-            ))
-          )}
-        </div>
-      </div>
+      <DealFinder
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        filteredDeals={filteredDeals}
+        selectedDealId={selectedDeal?.id}
+        onSelectDeal={handleSelectDeal}
+      />
 
       {showMoreActions && (
         <div className="more-actions-menu">
@@ -673,136 +528,24 @@ function DealsPage({ currentUser, selectedDealId }) {
         </div>
       )}
 
-      {/* Minimal create form captures the required fields before the full edit view. */}
       {showCreateForm && (
-        <div className="activity-form">
-          <label>
-            Deal Name
-            <input
-              name="dealName"
-              value={newDealData.dealName}
-              onChange={handleCreateInput}
-            />
-          </label>
-
-          <label>
-            Company
-            <input
-              name="companyName"
-              value={newDealData.companyName}
-              onChange={handleCreateInput}
-            />
-          </label>
-
-          <label>
-            Contact Name
-            <input
-              name="contactName"
-              value={newDealData.contactName}
-              onChange={handleCreateInput}
-            />
-          </label>
-
-          <label>
-            Contact Phone
-            <input
-              name="contactPhone"
-              value={newDealData.contactPhone}
-              onChange={handleCreateInput}
-            />
-          </label>
-
-          <label>
-            Contact Email
-            <input
-              name="contactEmail"
-              type="email"
-              value={newDealData.contactEmail}
-              onChange={handleCreateInput}
-            />
-          </label>
-
-          <label>
-            Value
-            <input
-              name="dealValue"
-              type="number"
-              value={newDealData.dealValue}
-              onChange={handleCreateInput}
-            />
-          </label>
-
-          <div className="form-actions">
-            <button className="work-button" onClick={handleCreateDeal}>
-              Create Deal
-            </button>
-
-            <button
-              className="refresh-button"
-              onClick={() => setShowCreateForm(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
+        <DealCreateForm
+          deal={newDealData}
+          onChange={handleCreateInput}
+          onCreate={handleCreateDeal}
+          onCancel={() => setShowCreateForm(false)}
+        />
       )}
 
       {selectedDeal && editData ? (
         <>
-          {/* Activity capture supports the execution and follow-up views. */}
           {showActivityForm && (
-            <div className="activity-form">
-              <h3>Log Activity</h3>
-
-              <label>
-                Activity Type
-                <select
-                  name="activityType"
-                  value={activityData.activityType}
-                  onChange={handleActivityInput}
-                >
-                  <option value="CALL">Call</option>
-                  <option value="EMAIL">Email</option>
-                  <option value="MEETING">Meeting</option>
-                  <option value="TEXT">Text</option>
-                </select>
-              </label>
-
-              <label>
-                Outcome
-                <select
-                  name="outcome"
-                  value={activityData.outcome}
-                  onChange={handleActivityInput}
-                >
-                  <option value="SPOKE_WITH_CONTACT">Spoke With Contact</option>
-                  <option value="NO_ANSWER">No Answer</option>
-                  <option value="LEFT_VOICEMAIL">Left Voicemail</option>
-                  <option value="SENT_EMAIL">Sent Email</option>
-                  <option value="PROPOSED">Proposed</option>
-                </select>
-              </label>
-
-              <label>
-                Notes
-                <textarea
-                  name="notes"
-                  value={activityData.notes}
-                  onChange={handleActivityInput}
-                  placeholder="Activity notes..."
-                />
-              </label>
-
-              <div className="form-actions">
-                <button className="work-button" onClick={saveActivity}>
-                  Save Activity
-                </button>
-
-                <button className="refresh-button" onClick={cancelActivity}>
-                  Cancel
-                </button>
-              </div>
-            </div>
+            <DealActivityForm
+              activity={activityData}
+              onChange={handleActivityInput}
+              onSave={saveActivity}
+              onCancel={cancelActivity}
+            />
           )}
 
           <div className="deal-detail-grid">
@@ -1084,55 +827,11 @@ function DealsPage({ currentUser, selectedDealId }) {
             </div>
           </div>
 
-          {/* Lifecycle history is limited to leadership/admin users. */}
           {canViewLifecycleHistory && (
-            <div className="history-section">
-              <h3>Lifecycle History</h3>
-
-              {statusHistory.length === 0 ? (
-                <p className="empty-history">
-                  No lifecycle changes recorded yet.
-                </p>
-              ) : (
-                <div className="history-list">
-                  {statusHistory.map((item) => (
-                    <div key={item.id} className="history-item">
-                      <strong>{item.fieldChanged}</strong>
-                      <span>
-                        {item.oldValue || "None"} to {item.newValue || "None"}
-                      </span>
-                      <p>
-                        Changed by {item.changedBy || "Unknown"} on{" "}
-                        {item.changedAt
-                          ? new Date(item.changedAt).toLocaleString()
-                          : "Unknown date"}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {reactivationHistory.length > 0 && (
-                <>
-                  <h3>Reactivation History</h3>
-
-                  <div className="history-list">
-                    {reactivationHistory.map((item) => (
-                      <div key={item.id} className="history-item">
-                        <strong>{item.triggerType}</strong>
-                        <span>{item.reactivatedBy || "Unknown"}</span>
-                        <p>
-                          {item.reason || "No reason provided."}{" "}
-                          {item.reactivatedAt
-                            ? new Date(item.reactivatedAt).toLocaleString()
-                            : ""}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
+            <DealLifecycleHistory
+              statusHistory={statusHistory}
+              reactivationHistory={reactivationHistory}
+            />
           )}
         </>
       ) : (

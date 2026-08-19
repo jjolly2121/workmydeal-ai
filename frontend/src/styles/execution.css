@@ -1,0 +1,158 @@
+/* ============================================================
+   DAILY EXECUTION
+============================================================ */
+.execution-table {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.execution-row {
+  display: grid;
+  grid-template-columns: 1.8fr 1.35fr 1fr 0.75fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.execution-row:last-child {
+  border-bottom: none;
+}
+
+.execution-row > * {
+  text-align: left;
+  justify-self: start;
+}
+
+.execution-header {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.execution-header span {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.execution-row strong {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.execution-row span {
+  font-size: 0.86rem;
+  color: #0f172a;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.execution-row .priority-badge {
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.execution-row > button {
+  justify-self: end;
+}
+
+.execution-row .refresh-button {
+  min-width: 100px;
+  padding: 7px 12px;
+  border-radius: 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.priority-badge.high {
+  color: var(--danger);
+}
+
+.priority-badge.medium {
+  color: var(--warning);
+}
+
+.priority-badge.low {
+  color: var(--success);
+}
+
+.execution-section h3 {
+  color: var(--primary);
+  margin: 18px 0 12px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: left;
+}
+
+.execution-complete-box {
+  background: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.execution-touch-form {
+  margin: 0;
+  padding: 18px 22px 20px;
+  border-radius: 0 0 16px 16px;
+  border-top: 1px solid var(--border);
+  background: #ffffff;
+  box-shadow: none;
+  display: grid;
+  gap: 14px;
+}
+
+.execution-touch-form h4 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-align: left;
+}
+
+.execution-touch-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #334155;
+  text-align: left;
+}
+
+.execution-touch-form select, .execution-touch-form textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 9px 11px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: white;
+}
+
+.execution-touch-form textarea {
+  min-height: 80px;
+}
+
+.execution-touch-form .work-button {
+  width: fit-content;
+  justify-self: end;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+}

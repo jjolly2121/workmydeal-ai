@@ -84,9 +84,18 @@ public class AuthController {
     }
 
     @GetMapping("/validate")
-    public Map<String, Object> validateSession(@RequestParam String token) {
-        AuthSession session = authSessionRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Session not found."));
+    public Map<String, Object> validateSession(
+            @RequestHeader(value = "X-Auth-Token", required = false) String token
+    ) {
+        if (token == null || token.isBlank()) {
+            return Map.of("valid", false);
+        }
+
+        AuthSession session = authSessionRepository.findByToken(token).orElse(null);
+
+        if (session == null) {
+            return Map.of("valid", false);
+        }
 
         boolean valid =
                 Boolean.TRUE.equals(session.getActiveStatus()) &&

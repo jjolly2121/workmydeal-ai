@@ -14,6 +14,7 @@ sales records.
 - Full-stack React + Spring Boot application architecture
 - REST API design with controllers, services, repositories, models, and DTOs
 - BCrypt password hashing and backend-stored token sessions
+- Write-only password serialization and administrator checks on user-management endpoints
 - Role-aware workflows for admins, managers, and sales reps
 - Deal management with notes, activity history, ownership, and status tracking
 - Rule-based priority scoring and daily execution recommendations
@@ -40,6 +41,8 @@ sales records.
 .
 ├── backend/        # Spring Boot API, services, models, repositories
 ├── frontend/       # React/Vite user interface
+│   ├── src/features/deals/  # Deal components, shared logic, and tests
+│   └── src/styles/          # Feature-level stylesheets
 ├── docs/           # Portfolio documentation and test guide
 ├── sample-data/    # Neutral import files for testing
 ├── test-api.http   # Optional local API request examples
@@ -114,6 +117,20 @@ Frontend URL:
 http://127.0.0.1:5173/
 ```
 
+### Optional PostgreSQL profile
+
+The PostgreSQL profile reads connection settings from environment variables:
+
+```bash
+export WORKMYDEAL_DB_URL=jdbc:postgresql://localhost:5432/workmydeal
+export WORKMYDEAL_DB_USERNAME=workmydeal
+export WORKMYDEAL_DB_PASSWORD=choose-a-local-password
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
+```
+
+Do not commit database passwords or production connection strings.
+
 ## Import Test Data
 
 The repository includes neutral sample imports:
@@ -147,6 +164,7 @@ Frontend:
 cd frontend
 npm install
 npm run lint
+npm test
 npm run build
 ```
 
@@ -168,6 +186,10 @@ This repository is prepared for public portfolio use. It does not include
 employer data, customer data, production credentials, local database files, or
 real sales records. Sample accounts and opportunities are fictional and exist
 only to demonstrate the application workflow.
+
+## Security Scope
+
+This remains a local portfolio prototype rather than a production identity system. Passwords are stored as BCrypt hashes and excluded from JSON responses. Session tokens are sent in request headers, and user-management mutations plus audit-history access require an administrator account. A hosted version should replace the custom session layer with a maintained authentication framework, add resource-level authorization tests, rotate and revoke sessions centrally, and keep demo seeding disabled.
 
 ## Future Enhancements
 

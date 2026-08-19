@@ -1,7 +1,9 @@
 package com.workmydeal.backend.config;
 
 import com.workmydeal.backend.model.AuthSession;
+import com.workmydeal.backend.model.User;
 import com.workmydeal.backend.repository.AuthSessionRepository;
+import com.workmydeal.backend.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -13,9 +15,14 @@ import java.time.LocalDateTime;
 public class AuthTokenInterceptor implements HandlerInterceptor {
 
     private final AuthSessionRepository authSessionRepository;
+    private final UserRepository userRepository;
 
-    public AuthTokenInterceptor(AuthSessionRepository authSessionRepository) {
+    public AuthTokenInterceptor(
+            AuthSessionRepository authSessionRepository,
+            UserRepository userRepository
+    ) {
         this.authSessionRepository = authSessionRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -55,6 +62,29 @@ public class AuthTokenInterceptor implements HandlerInterceptor {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired auth token.");
             return false;
         }
+
+        User user = userRepository.findById(session.getUserId()).orElse(null);
+
+        if (user == null || !Boolean.TRUE.equals(user.getActiveStatus())) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User account is unavailable.");
+            return false;
+        }
+
+        boolean modifiesUsers =
+                path.startsWith("/api/users") &&
+                !"GET".equalsIgnoreCase(request.getMethod());
+        boolean readsAuditHistory = path.startsWith("/api/audit-history");
+
+        if (
+                (modifiesUsers || readsAuditHistory) &&
+                !"ADMIN".equalsIgnoreCase(user.getRole())
+        ) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Administrator access is required.");
+            return false;
+        }
+
+        request.setAttribute("authenticatedUserId", user.getId());
+        request.setAttribute("authenticatedUserRole", user.getRole());
 
         return true;
     }

@@ -1,0 +1,199 @@
+/* ============================================================
+   ADMINISTRATION
+============================================================ */
+
+.user-management-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.user-management-page .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.user-management-page .section-header h2 {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.user-management-page .section-header p {
+  display: none;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.link-button {
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 900;
+  cursor: pointer;
+  padding: 8px 4px;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+.admin-user-summary {
+  width: min(360px, 100%);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.admin-user-summary div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-user-summary div:last-child {
+  border-bottom: none;
+}
+
+.admin-user-summary span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.admin-user-summary strong {
+  color: var(--text);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.admin-create-user-form {
+  padding: 18px;
+}
+
+.admin-create-user-form h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.admin-create-user-form .form-grid {
+  margin-top: 12px;
+}
+
+.admin-create-user-form .work-button {
+  justify-self: end;
+  margin-top: 4px;
+}
+
+.user-table {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.user-row {
+  display: grid;
+  grid-template-columns: .9fr 1.25fr 0.9fr 0.55fr 2.2fr;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.user-row:last-child {
+  border-bottom: none;
+}
+
+.user-header {
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.user-row span {
+  min-width: 0;
+  color: var(--text);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-row .inline-select {
+  width: 100%;
+  min-width: 0;
+  padding: 7px 9px;
+  font-size: 0.85rem;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.user-actions .refresh-button {
+  padding: 7px 9px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.user-actions .trash-button {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #991b1b;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.user-actions .trash-button svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.user-actions .trash-button:hover {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.user-actions .trash-button:active {
+  background: #fecaca;
+  transform: translateY(1px);
+}
