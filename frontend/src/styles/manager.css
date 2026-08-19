@@ -1,0 +1,146 @@
+/* ============================================================
+   MANAGER DASHBOARD
+============================================================ */
+.manager-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.manager-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+.manager-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.manager-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.manager-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.manager-table-card {
+  min-height: 280px;
+}
+
+.manager-table {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.manager-table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.manager-table-card:nth-child(2) .manager-table-row {
+  grid-template-columns: 1fr 0.7fr 1fr;
+}
+
+.manager-table-row:last-child {
+  border-bottom: none;
+}
+
+.manager-table-header {
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.manager-table-total {
+  background: #f8fafc;
+  font-weight: 900;
+}
+
+.manager-report-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.manager-report-row {
+  display: grid;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.manager-report-row:first-of-type {
+  border-top: none;
+}
+
+.manager-report-row span, .manager-report-row p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.activity-trend-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  align-items: end;
+  min-height: 170px;
+}
+
+.activity-trend-column {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.activity-trend-bar-wrap {
+  height: 96px;
+  width: 100%;
+  max-width: 34px;
+  display: flex;
+  align-items: end;
+  background: #f1f5f9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.activity-trend-bar {
+  width: 100%;
+  background: var(--primary);
+  border-radius: 8px 8px 0 0;
+}
+
+.activity-trend-column strong {
+  font-size: 0.9rem;
+}
+
+.activity-trend-column span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}

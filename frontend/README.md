@@ -1,6 +1,6 @@
-# WorkMyDeal AI Frontend
+# WorkMyDeal Sales Platform Frontend
 
-This folder contains the React/Vite frontend for WorkMyDeal AI.
+This folder contains the React/Vite frontend for WorkMyDeal.
 
 ## Setup
 

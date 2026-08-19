@@ -1,0 +1,78 @@
+/* ============================================================
+   RESPONSIVE RULES
+============================================================ */
+@media (max-width: 950px) {
+  .deals-search-row, .deal-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .deals-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    min-height: auto;
+  }
+
+  .sidebar-nav {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .deals-page, .dashboard-main {
+    grid-template-columns: 1fr;
+  }
+
+  .forecast-controls, .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .forecast-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cadence-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1200px) {
+  .pipeline-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid, .dashboard-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-grid-five {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .app-content {
+    padding: 16px;
+  }
+
+  .dashboard-grid, .dashboard-metrics, .metrics-grid, .execution-summary.in-card, .pipeline-grid, .forecast-row {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-grid-five {
+    grid-template-columns: 1fr;
+  }
+}

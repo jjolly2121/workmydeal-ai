@@ -61,7 +61,7 @@ function App() {
       return;
     }
 
-    apiFetch(`/api/auth/validate?token=${encodeURIComponent(token)}`)
+    apiFetch("/api/auth/validate")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Session could not be validated.");
@@ -171,7 +171,7 @@ function App() {
           <div className="logo-mark">📈</div>
 
           <div>
-            <strong>WorkMyDeal AI</strong>
+            <strong>WorkMyDeal</strong>
           </div>
         </div>
 

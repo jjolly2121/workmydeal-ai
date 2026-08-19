@@ -1,6 +1,8 @@
-# WorkMyDeal AI
+# WorkMyDeal Sales Platform
 
-WorkMyDeal AI is a full-stack sales execution and forecasting platform built to
+[![Tests](https://github.com/jjolly2121/workmydeal-sales-platform/actions/workflows/tests.yml/badge.svg)](https://github.com/jjolly2121/workmydeal-sales-platform/actions/workflows/tests.yml)
+
+WorkMyDeal is a full-stack sales execution and forecasting platform built to
 showcase practical product engineering: a React frontend, Spring Boot REST API,
 role-aware workflows, local persistence, spreadsheet import, reporting exports,
 and rule-based prioritization.
@@ -9,11 +11,18 @@ The application is intentionally designed as a portfolio-ready prototype. It
 uses neutral sample data and does not include employer, customer, or production
 sales records.
 
+## Product Preview
+
+![Sales performance dashboard](docs/images/dashboard.png)
+
+![Deal pipeline workspace](docs/images/deals.png)
+
 ## What It Demonstrates
 
 - Full-stack React + Spring Boot application architecture
 - REST API design with controllers, services, repositories, models, and DTOs
 - BCrypt password hashing and backend-stored token sessions
+- Write-only password serialization and administrator checks on user-management endpoints
 - Role-aware workflows for admins, managers, and sales reps
 - Deal management with notes, activity history, ownership, and status tracking
 - Rule-based priority scoring and daily execution recommendations
@@ -40,6 +49,8 @@ sales records.
 .
 ├── backend/        # Spring Boot API, services, models, repositories
 ├── frontend/       # React/Vite user interface
+│   ├── src/features/deals/  # Deal components, shared logic, and tests
+│   └── src/styles/          # Feature-level stylesheets
 ├── docs/           # Portfolio documentation and test guide
 ├── sample-data/    # Neutral import files for testing
 ├── test-api.http   # Optional local API request examples
@@ -114,6 +125,20 @@ Frontend URL:
 http://127.0.0.1:5173/
 ```
 
+### Optional PostgreSQL profile
+
+The PostgreSQL profile reads connection settings from environment variables:
+
+```bash
+export WORKMYDEAL_DB_URL=jdbc:postgresql://localhost:5432/workmydeal
+export WORKMYDEAL_DB_USERNAME=workmydeal
+export WORKMYDEAL_DB_PASSWORD=choose-a-local-password
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.profiles=postgres
+```
+
+Do not commit database passwords or production connection strings.
+
 ## Import Test Data
 
 The repository includes neutral sample imports:
@@ -147,6 +172,7 @@ Frontend:
 cd frontend
 npm install
 npm run lint
+npm test
 npm run build
 ```
 
@@ -169,10 +195,18 @@ employer data, customer data, production credentials, local database files, or
 real sales records. Sample accounts and opportunities are fictional and exist
 only to demonstrate the application workflow.
 
+## Security Scope
+
+This remains a local portfolio prototype rather than a production identity system. Passwords are stored as BCrypt hashes and excluded from JSON responses. Session tokens are sent in request headers, and user-management mutations plus audit-history access require an administrator account. A hosted version should replace the custom session layer with a maintained authentication framework, add resource-level authorization tests, rotate and revoke sessions centrally, and keep demo seeding disabled.
+
 ## Future Enhancements
 
 - JWT authentication and stricter Spring Security authorization
 - Hosted PostgreSQL deployment
 - Stronger import validation and preview mapping
 - CRM/email/calendar integrations
-- Advanced forecasting analytics and AI-assisted recommendations
+- Predictive forecasting and data-driven next-action recommendations
+
+## License
+
+The original source code is available under the [MIT License](LICENSE).
