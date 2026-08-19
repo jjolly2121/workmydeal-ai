@@ -1,8 +1,8 @@
-# WorkMyDeal AI System Blueprint
+# WorkMyDeal Sales Platform System Blueprint
 
 ## Product Identity
 
-WorkMyDeal AI is a lifecycle-aware B2B sales execution system that helps sales representatives move opportunities forward through prioritized work queues, cadence-based outreach, and contract-timing awareness.
+WorkMyDeal is a lifecycle-aware B2B sales execution system that helps sales representatives move opportunities forward through prioritized work queues, cadence-based outreach, and contract-timing awareness.
 
 ## Core Philosophy
 

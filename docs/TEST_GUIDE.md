@@ -1,4 +1,4 @@
-# WorkMyDeal AI Test Guide
+# WorkMyDeal Sales Platform Test Guide
 
 This guide walks through the application feature by feature so the project can
 be tested after cloning the repository.

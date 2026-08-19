@@ -42,7 +42,7 @@ function LoginPage({ onLogin }) {
       <section className="login-brand-panel">
         <div className="login-logo-mark">↗</div>
 
-        <h1>WorkMyDeal AI</h1>
+        <h1>WorkMyDeal</h1>
 
         <p>Prioritize. Execute. Close.</p>
       </section>

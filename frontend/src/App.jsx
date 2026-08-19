@@ -171,7 +171,7 @@ function App() {
           <div className="logo-mark">📈</div>
 
           <div>
-            <strong>WorkMyDeal AI</strong>
+            <strong>WorkMyDeal</strong>
           </div>
         </div>
 

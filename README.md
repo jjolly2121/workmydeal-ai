@@ -1,8 +1,8 @@
-# WorkMyDeal AI
+# WorkMyDeal Sales Platform
 
-[![Tests](https://github.com/jjolly2121/workmydeal-ai/actions/workflows/tests.yml/badge.svg)](https://github.com/jjolly2121/workmydeal-ai/actions/workflows/tests.yml)
+[![Tests](https://github.com/jjolly2121/workmydeal-sales-platform/actions/workflows/tests.yml/badge.svg)](https://github.com/jjolly2121/workmydeal-sales-platform/actions/workflows/tests.yml)
 
-WorkMyDeal AI is a full-stack sales execution and forecasting platform built to
+WorkMyDeal is a full-stack sales execution and forecasting platform built to
 showcase practical product engineering: a React frontend, Spring Boot REST API,
 role-aware workflows, local persistence, spreadsheet import, reporting exports,
 and rule-based prioritization.
@@ -10,6 +10,12 @@ and rule-based prioritization.
 The application is intentionally designed as a portfolio-ready prototype. It
 uses neutral sample data and does not include employer, customer, or production
 sales records.
+
+## Product Preview
+
+![Sales performance dashboard](docs/images/dashboard.png)
+
+![Deal pipeline workspace](docs/images/deals.png)
 
 ## What It Demonstrates
 
@@ -199,4 +205,8 @@ This remains a local portfolio prototype rather than a production identity syste
 - Hosted PostgreSQL deployment
 - Stronger import validation and preview mapping
 - CRM/email/calendar integrations
-- Advanced forecasting analytics and AI-assisted recommendations
+- Predictive forecasting and data-driven next-action recommendations
+
+## License
+
+The original source code is available under the [MIT License](LICENSE).
